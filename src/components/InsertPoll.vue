@@ -6,13 +6,13 @@
             <div class="pb-12">
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-4">
+                    <div class="sm:col-span-4" v-if="polll">
                         <label for="audience" class="block text-sm font-medium leading-6 text-gray-900">Audience</label>
                         <div class="mt-2">
                             <div
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input required v-model="insertDataArr.audience" type="text" name="audience" id="audience"
-                                    autocomplete="audience"
+                                     autocomplete="audience"
                                     class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                     placeholder="India" />
                             </div>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-span-full">
-                        <label for="ques" class="block text-sm font-medium leading-6 text-gray-900">Question
+                        <label for="ques" class="block text-sm font-medium leading-6 text-gray-900">Title
                         </label>
                         <div class="mt-2">
                             <input v-model="insertDataArr.ques" type="text" name="ques" id="ques" required
@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    <div class="sm:col-span-4 sm:col-start-1">
+                    <div class="sm:col-span-4 sm:col-start-1" v-if="polll">
                         <label for="task" class="block text-sm font-medium leading-6 text-gray-900">Options</label>
                         <div class="flex mt-2">
                             <input placeholder="Add a new option" v-model="newTask" @keyup.enter="addTask" type="text"
@@ -50,7 +50,7 @@
                             <button @click.prevent="addTask" class="bg-blue-500 text-white px-4 py-2">Add</button>
                         </div>
                     </div>
-                    <ul class="sm:col-span-3">
+                    <ul class="sm:col-span-3" v-if="polll">
                         <li v-for="(task, index) in tasks" :key="index"
                             class="flex justify-between items-center border-b border-gray-300 p-2 w-full">
                             {{ task }}
@@ -63,21 +63,22 @@
                             </button>
                         </li>
                     </ul>
-                    <div class="col-span-full">
+                    <div class="col-span-full" >
                         <label for="region" class="block text-sm font-medium leading-6 text-gray-900">
                             Content</label>
                         <div id="editor"></div>
                     </div>
                     <br>
                     <div class="col-span-full"> </div>
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-2" v-if="polll">
                         <label for="time" class="block text-sm font-medium leading-6 text-gray-900">Time of
                             Ending
                             the Poll
                         </label>
                         <div class="mt-2">
                             <input v-model="insertDataArr.timeLeft" type="datetime-local" name="time" id="postal-code"
-                               required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                required
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                 </div>
@@ -106,9 +107,12 @@ import Quill from 'quill';
 let quill
 
 export default {
-
-    
-
+    props: {
+        poll: {
+            type: String,
+            required: true
+        }
+    },
     mounted() {
         quill = new Quill('#editor', {
             theme: 'snow',
@@ -117,18 +121,14 @@ export default {
 
     data() {
         return {
+            polll:this.poll==='poll',
             newTask: '',
             err: '',
             tasks: [],
             insertDataArr: {
                 content: '',
-                name: '',
-                date: null,
-                location: '',
                 ques: '',
                 genre: '',
-                options: [],
-                closed: null,
                 audience: '',
                 timeLeft: null,
             },
@@ -146,34 +146,43 @@ export default {
         },
 
         insertData() {
-            if(this.tasks.length<2){
-                this.err='Please add at least 2 options!'
-                setTimeout(()=>this.err='',3000)
-                return
-            }
             const data = {
                 ...this.insertDataArr
             };
-            data.options=this.tasks
-            if(quill.root.innerHTML === '<p><br></p>'){
-                this.err='Please enter something inside Content!'
-                setTimeout(()=>this.err='',3000)
+
+            if (this.polll) {
+
+                if (this.tasks.length < 2) {
+                    this.err = 'Please add at least 2 options!'
+                    setTimeout(() => this.err = '', 3000)
+                    return
+                }
+
+                data.options = this.tasks
+            }
+            else{
+                data.section=''
+            }
+            if (quill.root.innerHTML === '<p><br></p>') {
+                this.err = 'Please enter something inside Content!'
+                setTimeout(() => this.err = '', 3000)
                 return
             }
-            data.content=quill.root.innerHTML
+            data.content = quill.root.innerHTML
             const db = getFirestore(fbApp)
 
             // Replace this with the data you want to add
-            
+
             data.date = Timestamp.fromDate(new Date())
             data.timeLeft = Timestamp.fromDate(new Date(data.timeLeft))
             data.name = data.ques
+            data.location = ''
+            data.closed = false
 
-
-            setDoc(doc(db, 'polls', new Date().getTime().toString()), data)
+            setDoc(doc(db, `${this.polll ? 'polls' : 'blogs'}`, new Date().getTime().toString()), data)
                 .then(r => {
                     this.clearform()
-                    alert("Poll created successfully!!")
+                    alert(`${this.polll ? 'Poll' : 'Blog'} created successfully!!`)
                 })
                 .catch(e => {
                     alert(e.code)
@@ -198,7 +207,7 @@ export default {
                     audience: '',
                     timeLeft: null,
                 }
-                quill.root.innerHTML=''
+            quill.root.innerHTML = ''
         }
     }
 };

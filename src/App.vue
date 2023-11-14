@@ -198,41 +198,17 @@
                     </div>
 
 
-                   <InsertPoll></InsertPoll>
+                   <InsertPoll poll="poll"></InsertPoll>
 
                 </div>
 
 
-                <div class="md:col-span-2 md:row-span-2 bg-white rounded-lg shadow-md shadow-gray-200">
-                    <div class="px-6 py-5 border-b border-gray-100 sm:flex sm:items-center sm:justify-between">
-                        <h2 class="font-medium text-gray-700">Get all data example (Live data)</h2>
+                <div class="px-8 md:col-span-2 md:row-span-2 bg-white rounded-lg shadow-md shadow-gray-200">
+                    <div class="py-5 border-b border-gray-100 sm:flex sm:items-center sm:justify-between">
+                        <h2 class="font-medium text-gray-700">Create Blog</h2>
                     </div>
 
-                    <div class="p-6 space-w-6">
-
-                        <div class="mt-2 shadow-sm border rounded-lg overflow-x-auto">
-                            <table class="w-full table-auto text-sm text-left">
-                                <thead class="bg-gray-50 text-gray-600 font-medium border-b">
-                                    <tr>
-                                        <th class="py-3 px-6">Name</th>
-                                        <th class="py-3 px-6">SAT Score</th>
-                                        <th class="py-3 px-6">City</th>
-                                        <th class="py-3 px-6">Address</th>
-                                        <th class="py-3 px-6">Country</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-gray-600 divide-y">
-                                    <tr v-for="(item, idx) in tableItems" :key="idx">
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ item.satScore }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ item.city }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ item.country }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <InsertPoll poll="blog"></InsertPoll>
 
                 </div>
 
