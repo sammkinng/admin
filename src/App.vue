@@ -32,11 +32,11 @@
             <div class="flex flex-col items-center flex-1 space-y-6">
                 <a href="#"
                     class="flex items-center justify-center w-full p-5 lg:p-0 lg:h-20 font-bold text-white truncate bg-blue-600 whitespace-nowrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
+                    <router-link to="/"> <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg></router-link>
                 </a>
 
                 <nav class="flex flex-col items-center space-y-6">
@@ -180,260 +180,28 @@
                 </div>
             </header>
 
-            <section class="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
-                <div>
-                    <h2 class="text-3xl font-medium text-gray-800">Admin Panel</h2>
-                    <p class="mt-2 text-sm text-gray-500"></p>
-                </div>
-
-
-            </section>
-
-            <section class="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 ">
-
-                <div
-                    class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-2 md:row-span-2 gap-y-4 gap-x-8 ">
-                    <div class="sm:flex sm:items-center sm:justify-between">
-                        <h2 class="font-medium text-gray-700">Create Poll</h2>
-                    </div>
-
-
-                   <InsertPoll poll="poll"></InsertPoll>
-
-                </div>
-
-
-                <div class="px-8 md:col-span-2 md:row-span-2 bg-white rounded-lg shadow-md shadow-gray-200">
-                    <div class="py-5 border-b border-gray-100 sm:flex sm:items-center sm:justify-between">
-                        <h2 class="font-medium text-gray-700">Create Blog</h2>
-                    </div>
-
-                    <InsertPoll poll="blog"></InsertPoll>
-
-                </div>
-
-                <div
-                    class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-1 md:row-span-2 gap-y-4 gap-x-8 ">
-                    <div class="sm:flex sm:items-center sm:justify-between">
-                        <h2 class="font-medium text-gray-700">Update Score by Name</h2>
-                    </div>
-
-
-                    <form @submit.prevent="updateData">
-                        <div class="space-y-12">
-                            <div class="pb-12">
-
-                                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div class="sm:col-span-4">
-                                        <label for="update-name"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Name</label>
-                                        <div class="mt-2">
-                                            <select id="up-name" name="up-name" v-model="updateArr.name" required
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                                <option value="">Select Name</option>
-                                                <option v-for="(item, idx) in tableItems" :key="idx" :value="item.name">
-                                                    {{ item.name }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="sm:col-span-4">
-                                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">SAT
-                                            Score</label>
-                                        <div class="mt-2">
-                                            <div
-                                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                <input required v-model="updateArr.satScore" type="text" name="score" id="username"
-                                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="40" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 flex items-center justify-end gap-x-6">
-                            <button type="submit"
-                                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                        </div>
-
-                    </form>
-
-                </div>
-
-                <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="font-medium text-gray-700">Get Rank by Student Name</h2>
-                    </div>
-
-                    <div class="flex items-center p-8">
-                        <div class="w-full">
-                            <form @submit.prevent="getRank">
-
-                                <div class="w-full">
-                                    <label for="update-name"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Name</label>
-                                    <div class="mt-2">
-                                        <select id="up-name" name="up-name" v-model="rName" required
-                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                            <option value="">Select Name</option>
-                                            <option v-for="(item, idx) in tableItems" :key="idx" :value="item.name">
-                                                {{ item.name }}</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="mt-6 flex items-center justify-start gap-x-6">
-                                    <button type="submit"
-                                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get
-                                        Rank</button>
-                                </div>
-                                <div class="py-6" v-if="rank">
-                                    <h3 class="mt-6 text-2xl font-medium text-gray-800">{{ rank }}</h3>
-                                    <p class="mt-1 text-sm text-gray-500">Rank fetched</p>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="font-medium text-gray-700">Delete Student</h2>
-                    </div>
-
-                    <div class="flex items-center p-8">
-                        <div class="w-full">
-                            <form @submit.prevent="deleteD">
-
-                                <div class="w-full">
-                                    <label for="update-name"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Name</label>
-                                    <div class="mt-2">
-                                        <select id="up-name" name="up-name" v-model="deleteData" required
-                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                            <option value="">Select Name</option>
-                                            <option v-for="(item, idx) in tableItems" :key="idx" :value="item.name">
-                                                {{ item.name }}</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="mt-6 flex items-center justify-start gap-x-6">
-                                    <button type="submit"
-                                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                        Delete</button>
-                                </div>
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
+            <router-view></router-view>
         </main>
     </div>
 </template>
 
 
 <script>
-import axios from 'axios';
-import InsertPoll from './components/InsertPoll.vue';
-const apiUrl = 'http://localhost:8080';
+import router from './router';
 
 export default {
-    components:{
-        InsertPoll
-    },
+
     data() {
         return {
             isOpen: false,
             dropdownOpen: false,
-            updateArr: {
-                name: '',
-                satScore: ''
-            },
-            tableItems: [],
-            deleteData: '',
-            rank: '',
-            rName: ''
+            selected:0
         }
     },
 
-    created() {
-        this.getAllData()
-    },
-
-    mounted() {
-
-    },
-
-
-
-    methods: {
-        getAllData() {
-            try {
-                axios.get(`${apiUrl}/api/sat-results/view-all`)
-                    .then((response) => {
-                        console.log(response.data);
-                        this.tableItems = response.data
-                    });
-            } catch (error) {
-
-            }
-        },
-        updateData() {
-            try {
-                console.log(this.updateArr)
-
-                axios.put(`${apiUrl}/api/sat-results/update-score/${encodeURIComponent(this.updateArr.name)}?newScore=${this.updateArr.satScore}`)
-                    .then((response) => {
-                        console.log(response.data);
-                        alert('Updated')
-                        this.updateArr = {
-                            name: '',
-                            satScore: ''
-                        }
-                        this.getAllData()
-                    });
-            } catch (error) {
-
-            }
-        },
-        getRank() {
-            try {
-                axios.get(`${apiUrl}/api/sat-results/get-rank/${encodeURIComponent(this.rName)}`)
-                    .then((response) => {
-                        console.log(response.data)
-                        this.rank = response.data
-                        this.rName = ''
-                    });
-            } catch (error) {
-
-            }
-        },
-        deleteD() {
-            try {
-                console.log('here')
-                axios.delete(`${apiUrl}/api/sat-results/delete/${this.deleteData}`)
-                    .then((r) => {
-                        console.log(r.data)
-                        alert('deleted')
-                        this.deleteData = ''
-                        this.getAllData()
-                    });
-            } catch (error) {
-                console.log('there')
-            }
-        }
-    },
+    mounted(){
+        console.log(router.currentRoute.value.fullPath==='/')
+    }
 
 }
 </script>
