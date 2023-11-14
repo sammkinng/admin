@@ -182,8 +182,8 @@
 
             <section class="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
                 <div>
-                    <h2 class="text-3xl font-medium text-gray-800">CRUD Example</h2>
-                    <p class="mt-2 text-sm text-gray-500">Precize Assignment</p>
+                    <h2 class="text-3xl font-medium text-gray-800">Admin Panel</h2>
+                    <p class="mt-2 text-sm text-gray-500"></p>
                 </div>
 
 
@@ -194,92 +194,11 @@
                 <div
                     class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-2 md:row-span-2 gap-y-4 gap-x-8 ">
                     <div class="sm:flex sm:items-center sm:justify-between">
-                        <h2 class="font-medium text-gray-700">Insert Data Example</h2>
+                        <h2 class="font-medium text-gray-700">Create Poll</h2>
                     </div>
 
 
-                    <form @submit.prevent="insertData">
-                        <div class="space-y-12">
-                            <div class="pb-12">
-
-                                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div class="sm:col-span-4">
-                                        <label for="username"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Name</label>
-                                        <div class="mt-2">
-                                            <div
-                                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                <input required v-model="insertDataArr.name" type="text" name="name" id="name"
-                                                    autocomplete="name"
-                                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="Prince Yadav" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="sm:col-span-4">
-                                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">SAT
-                                            Score</label>
-                                        <div class="mt-2">
-                                            <div
-                                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                <input v-model="insertDataArr.satScore" type="text" name="score" required
-                                                    id="username"
-                                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="40" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-full">
-                                        <label for="street-address"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Street address</label>
-                                        <div class="mt-2">
-                                            <input v-model="insertDataArr.address" type="text" name="street-address"
-                                                id="street-address" autocomplete="street-address"
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                        </div>
-                                    </div>
-
-                                    <div class="sm:col-span-2 sm:col-start-1">
-                                        <label for="city"
-                                            class="block text-sm font-medium leading-6 text-gray-900">City</label>
-                                        <div class="mt-2">
-                                            <input v-model="insertDataArr.city" type="text" name="city" id="city"
-                                                autocomplete="address-level2"
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                        </div>
-                                    </div>
-
-                                    <div class="sm:col-span-2">
-                                        <label for="region" class="block text-sm font-medium leading-6 text-gray-900">
-                                            Country</label>
-                                        <div class="mt-2">
-                                            <input v-model="insertDataArr.country" type="text" name="region" id="region"
-                                                autocomplete="address-level1"
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                        </div>
-                                    </div>
-
-                                    <div class="sm:col-span-2">
-                                        <label for="postal-code"
-                                            class="block text-sm font-medium leading-6 text-gray-900">ZIP / Postal
-                                            code</label>
-                                        <div class="mt-2">
-                                            <input v-model="insertDataArr.pincode" type="text" name="postal-code"
-                                                id="postal-code" autocomplete="postal-code"
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 flex items-center justify-end gap-x-6">
-                            <button type="submit"
-                                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                        </div>
-
-                    </form>
+                   <InsertPoll></InsertPoll>
 
                 </div>
 
@@ -450,9 +369,13 @@
 
 <script>
 import axios from 'axios';
+import InsertPoll from './components/InsertPoll.vue';
 const apiUrl = 'http://localhost:8080';
 
 export default {
+    components:{
+        InsertPoll
+    },
     data() {
         return {
             isOpen: false,
@@ -460,14 +383,6 @@ export default {
             updateArr: {
                 name: '',
                 satScore: ''
-            },
-            insertDataArr: {
-                name: '',
-                satScore: '',
-                address: '',
-                city: '',
-                country: '',
-                pincode: ''
             },
             tableItems: [],
             deleteData: '',
@@ -487,27 +402,6 @@ export default {
 
 
     methods: {
-        insertData() {
-            try {
-                console.log(this.insertDataArr)
-                // Insert Data
-                axios.post(`${apiUrl}/api/sat-results/insert`, this.insertDataArr)
-                    .then((response) => {
-                        console.log(response.data);
-                        this.insertDataArr = {
-                            name: '',
-                            satScore: '',
-                            address: '',
-                            city: '',
-                            country: '',
-                            pincode: ''
-                        }
-                        this.getAllData()
-                    });
-            } catch (error) {
-                console.error('POST request failed', error);
-            }
-        },
         getAllData() {
             try {
                 axios.get(`${apiUrl}/api/sat-results/view-all`)
