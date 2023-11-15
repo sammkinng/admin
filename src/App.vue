@@ -40,38 +40,39 @@
                 </a>
 
                 <nav class="flex flex-col items-center space-y-6">
-                    <a href="#" class="p-2 transition-colors duration-300 rounded-lg group hover:bg-white">
-                        <svg class="w-5 h-5 stroke-blue-100/50" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path class="group-hover:stroke-blue-700"
-                                d="M22 18.2222C22 18.6937 21.7893 19.1459 21.4142 19.4793C21.0391 19.8127 20.5304 20 20 20H4C3.46957 20 2.96086 19.8127 2.58579 19.4793C2.21071 19.1459 2 18.6937 2 18.2222V5.77778C2 5.30628 2.21071 4.8541 2.58579 4.5207C2.96086 4.1873 3.46957 4 4 4H9L11 6.66667H20C20.5304 6.66667 21.0391 6.85397 21.4142 7.18737C21.7893 7.52076 22 7.97295 22 8.44444V18.2222Z"
-                                fill="#969CBA" fill-opacity="0.2" stroke="#969CBA" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
+
+                    <a href="#" :class="$route.path === '/' ? selectedClass : notSelectedClass">
+                        <router-link to="/"> <svg class="w-5 h-5 " viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path :class="['group-hover:stroke-blue-700',$route.path === '/'?blueStroke:'']"
+                                    d="M22 18.2222C22 18.6937 21.7893 19.1459 21.4142 19.4793C21.0391 19.8127 20.5304 20 20 20H4C3.46957 20 2.96086 19.8127 2.58579 19.4793C2.21071 19.1459 2 18.6937 2 18.2222V5.77778C2 5.30628 2.21071 4.8541 2.58579 4.5207C2.96086 4.1873 3.46957 4 4 4H9L11 6.66667H20C20.5304 6.66667 21.0391 6.85397 21.4142 7.18737C21.7893 7.52076 22 7.97295 22 8.44444V18.2222Z"
+                                    fill="#969CBA" fill-opacity="0.2" stroke="#969CBA" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></router-link>
                     </a>
 
-                    <a href="#" class="p-3 transition-colors duration-300 bg-white rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+                    <a href="#" :class="$route.path === '/poll' ? selectedClass : notSelectedClass">
+                        <router-link to="/poll"> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                fill="none" viewBox="0 0 24 24" stroke="#969CBA" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" :class="['group-hover:stroke-blue-700',$route.path === '/poll'?blueStroke:'']"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg></router-link>
+                    </a>
+
+                    <a href="#" :class="$route.path === '/blog' ? selectedClass : notSelectedClass">
+                        <router-link to="/blog"> <svg class="w-5 h-5 " viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path :class="['group-hover:stroke-blue-700',$route.path === '/blog'?blueStroke:'']"
+                                    d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
+                                    fill="#969CBA" fill-opacity="0.2" stroke="#969CBA" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path :class="['group-hover:stroke-blue-700',$route.path === '/blog'?blueStroke:'']" d="M22 6L12 13L2 6" stroke="#969CBA"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></router-link>
                     </a>
 
                     <a href="#" class="p-2 transition-colors duration-300 rounded-lg group hover:bg-white">
-                        <svg class="w-5 h-5 group-hover:stroke-blue-700 " viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path class=" group-hover:stroke-blue-700"
-                                d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
-                                fill="#969CBA" fill-opacity="0.2" stroke="#969CBA" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path class=" group-hover:stroke-blue-700" d="M22 6L12 13L2 6" stroke="#969CBA" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </a>
-
-                    <a href="#" class="p-2 transition-colors duration-300 rounded-lg group hover:bg-white">
-                        <svg class="w-5 h-5 group-hover:stroke-blue-700 " viewBox="0 0 24 24" fill="none"
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path class=" group-hover:stroke-blue-700"
                                 d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z"
@@ -187,20 +188,21 @@
 
 
 <script>
-import router from './router';
 
 export default {
 
     data() {
         return {
+
             isOpen: false,
             dropdownOpen: false,
-            selected:0
+            blueStroke:"stroke-blue-700",
+            selectedClass: "p-3 transition-colors duration-300 bg-white rounded-lg",
+            notSelectedClass: "p-2 transition-colors duration-300 rounded-lg group hover:bg-white"
         }
     },
 
-    mounted(){
-        console.log(router.currentRoute.value.fullPath==='/')
+    mounted() {
     }
 
 }
