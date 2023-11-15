@@ -12,7 +12,7 @@
                             <div
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input required v-model="insertDataArr.audience" type="text" name="audience" id="audience"
-                                     autocomplete="audience"
+                                    autocomplete="audience"
                                     class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                     placeholder="India" />
                             </div>
@@ -63,7 +63,7 @@
                             </button>
                         </li>
                     </ul>
-                    <div class="col-span-full" >
+                    <div class="col-span-full">
                         <label for="region" class="block text-sm font-medium leading-6 text-gray-900">
                             Content</label>
                         <div id="editor"></div>
@@ -97,8 +97,8 @@
 </template>
   
 <script>
-import { getFirestore, setDoc, doc, Timestamp, collection } from 'firebase/firestore/lite';
-import { fbApp } from '../main'
+import { setDoc, doc, Timestamp, getDoc } from 'firebase/firestore/lite';
+import { db } from '../main'
 
 import 'quill/dist/quill.snow.css';
 
@@ -121,7 +121,7 @@ export default {
 
     data() {
         return {
-            polll:this.poll==='poll',
+            polll: this.poll === 'poll',
             newTask: '',
             err: '',
             tasks: [],
@@ -160,8 +160,8 @@ export default {
 
                 data.options = this.tasks
             }
-            else{
-                data.section=''
+            else {
+                data.section = ''
             }
             if (quill.root.innerHTML === '<p><br></p>') {
                 this.err = 'Please enter something inside Content!'
@@ -169,9 +169,17 @@ export default {
                 return
             }
             data.content = quill.root.innerHTML
-            const db = getFirestore(fbApp)
 
-            // Replace this with the data you want to add
+            this.addAudience(data.audience)
+                .catch((e) => {
+                    this.err = e.code
+                })
+
+            this.addGenre(data.genre)
+                .catch((e) => {
+                    this.err = e.code
+                })
+
 
             data.date = Timestamp.fromDate(new Date())
             data.timeLeft = Timestamp.fromDate(new Date(data.timeLeft))
@@ -208,6 +216,38 @@ export default {
                     timeLeft: null,
                 }
             quill.root.innerHTML = ''
+        },
+
+        async addAudience(name) {
+            let r = await getDoc(doc(db, 'audiences', name))
+            if (r.exists()) {
+                setDoc(doc(db, 'audiences', name), {
+                    country: name,
+                    value: r.data().value + 1
+                })
+            }
+            else {
+                setDoc(doc(db, 'audiences', name), {
+                    country: name,
+                    value: 1
+                })
+            }
+        },
+
+        async addGenre(name) {
+            let r = await getDoc(doc(db, 'genres', name))
+            if (r.exists()) {
+                setDoc(doc(db, 'genres', name), {
+                    name,
+                    value: r.data().value + 1
+                })
+            }
+            else {
+                setDoc(doc(db, 'genres', name), {
+                    name,
+                    value: 1
+                })
+            }
         }
     }
 };

@@ -6,6 +6,9 @@ import {initializeApp} from 'firebase/app';
 import { environment } from './environment';
 import router from './router';
 
-export const fbApp=initializeApp(environment.firebaseConfig);
+import {getFirestore} from 'firebase/firestore/lite';
+
+const fbApp=initializeApp(environment.firebaseConfig);
+export const db = getFirestore(fbApp)
 
 createApp(App).use(router).mount('#app');
