@@ -31,6 +31,30 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="bg1" class="block text-sm font-medium leading-6 text-gray-900">
+                            Banner</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                <input ref="bg1" accept="image/*" @change="uploadBanner" type="file" name="bg1" required id="bg1"
+                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="bg2" class="block text-sm font-medium leading-6 text-gray-900">
+                            Cover Image</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                <input ref="bg2" accept="image/*" @change="uploadCover" type="file" name="bg2" required id="bg2"
+                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-span-full">
                         <label for="ques" class="block text-sm font-medium leading-6 text-gray-900">Title
                         </label>
@@ -98,7 +122,8 @@
   
 <script>
 import { setDoc, doc, Timestamp, getDoc } from 'firebase/firestore/lite';
-import { db } from '../main'
+import { db,storage } from '../main'
+import { ref,uploadBytes,getDownloadURL} from "firebase/storage";
 
 import 'quill/dist/quill.snow.css';
 
@@ -126,6 +151,8 @@ export default {
             err: '',
             tasks: [],
             insertDataArr: {
+                bg1: '',
+                bg2: '',
                 content: '',
                 ques: '',
                 genre: '',
@@ -203,7 +230,11 @@ export default {
             this.newTask = '',
                 this.err = '',
                 this.tasks = [],
+                this.$refs.bg1.value = null;
+                this.$refs.bg2.value = null;
                 this.insertDataArr = {
+                    bg1:'',
+                    bg2:'',
                     content: '',
                     name: '',
                     date: null,
@@ -247,6 +278,52 @@ export default {
                     name,
                     value: 1
                 })
+            }
+        },
+        async uploadBanner(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                try {
+                    // Create a reference to the storage location
+                    const storageRef = ref(storage,'banners/' + file.name);
+
+                    // Upload the file
+                    await uploadBytes(storageRef,file)
+
+                    // Get the download URL
+                    const url = await getDownloadURL(storageRef);
+
+                    // Update the image URL in the component
+                    this.insertDataArr.bg1=url
+                } catch (error) {
+                    this.err = error.code
+                    setTimeout(() => this.err = '', 1500)
+                    console.error('Error uploading image:', error.message);
+                }
+            }
+        },
+        async uploadCover(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                try {
+                    // Create a reference to the storage location
+                    const storageRef = ref(storage,'covers/' + file.name);
+
+                    // Upload the file
+                    await uploadBytes(storageRef,file)
+
+                    // Get the download URL
+                    const url = await getDownloadURL(storageRef);
+
+                    // Update the image URL in the component
+                    this.insertDataArr.bg2=url;
+                } catch (error) {
+                    this.err = error.code
+                    setTimeout(() => this.err = '', 1500)
+                    console.error('Error uploading image:', error.message);
+                }
             }
         }
     }
