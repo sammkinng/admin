@@ -33,30 +33,29 @@
                     </div>
 
                     <div class="sm:col-span-4">
-                        <label for="bg1" class="block text-sm font-medium leading-6 text-gray-900">
+                        <label for="bg" class="block text-sm font-medium leading-6 text-gray-900">
                             Banner</label>
                         <div class="mt-2">
                             <div
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input ref="bg1" accept="image/*" @change="uploadBanner" type="file" name="bg1" required id="bg1"
+                                <input ref="bg" accept="image/*" @change="uploadBanner" type="file" name="bg" required
+                                    id="bg"
                                     class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="sm:col-span-4">
-                        <label for="bg2" class="block text-sm font-medium leading-6 text-gray-900">
-                            Cover Image</label>
+                    <div class="col-span-full">
+                        <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Title (Home Screen)
+                        </label>
                         <div class="mt-2">
-                            <div
-                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input ref="bg2" accept="image/*" @change="uploadCover" type="file" name="bg2" required id="bg2"
-                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
-                            </div>
+                            <input v-model="insertDataArr.name" type="text" name="title" id="title" required
+                                placeholder="Will india win this world cup?"
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                     <div class="col-span-full">
-                        <label for="ques" class="block text-sm font-medium leading-6 text-gray-900">Title
+                        <label for="ques" class="block text-sm font-medium leading-6 text-gray-900">Title (Poll Page)
                         </label>
                         <div class="mt-2">
                             <input v-model="insertDataArr.ques" type="text" name="ques" id="ques" required
@@ -122,8 +121,8 @@
   
 <script>
 import { setDoc, doc, Timestamp, getDoc } from 'firebase/firestore/lite';
-import { db,storage } from '../main'
-import { ref,uploadBytes,getDownloadURL} from "firebase/storage";
+import { db, storage } from '../main'
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import 'quill/dist/quill.snow.css';
 
@@ -151,13 +150,14 @@ export default {
             err: '',
             tasks: [],
             insertDataArr: {
-                bg1: '',
-                bg2: '',
+                name:'',
+                bg: '',
                 content: '',
                 ques: '',
                 genre: '',
                 audience: '',
                 timeLeft: null,
+                closed: false
             },
         };
     },
@@ -173,23 +173,28 @@ export default {
         },
 
         insertData() {
+            if (this.polll) {
+                this.insertPoll()
+            }
+            else {
+                this.insertBlog()
+            }
+        },
+
+        insertPoll() {
+
             const data = {
                 ...this.insertDataArr
             };
 
-            if (this.polll) {
-
-                if (this.tasks.length < 2) {
-                    this.err = 'Please add at least 2 options!'
-                    setTimeout(() => this.err = '', 3000)
-                    return
-                }
-
-                data.options = this.tasks
+            if (this.tasks.length < 2) {
+                this.err = 'Please add at least 2 options!'
+                setTimeout(() => this.err = '', 3000)
+                return
             }
-            else {
-                data.section = ''
-            }
+
+            data.options = this.tasks
+
             if (quill.root.innerHTML === '<p><br></p>') {
                 this.err = 'Please enter something inside Content!'
                 setTimeout(() => this.err = '', 3000)
@@ -207,45 +212,82 @@ export default {
                     this.err = e.code
                 })
 
+            let pid = new Date().getTime().toString()
+            this.addVotesArr(pid, data.options)
 
-            data.date = Timestamp.fromDate(new Date())
-            data.timeLeft = Timestamp.fromDate(new Date(data.timeLeft))
-            data.name = data.ques
+            let timeleftDate = new Date(data.timeLeft)
+            let currDate = new Date()
+            let deactivationTime = timeleftDate.getTime() - currDate.getTime()
+            data.date = currDate.toString()
+            data.timeLeft = timeleftDate.toString()
             data.location = ''
-            data.closed = false
+            data.id=pid
 
-            setDoc(doc(db, `${this.polll ? 'polls' : 'blogs'}`, new Date().getTime().toString()), data)
+            setDoc(doc(db, 'polls', pid), data)
                 .then(r => {
                     this.clearform()
-                    alert(`${this.polll ? 'Poll' : 'Blog'} created successfully!!`)
+                    alert(`Poll created successfully!!`)
                 })
                 .catch(e => {
                     alert(e.code)
                     console.log(e)
                 })
 
+            setTimeout(() => this.deactivatePoll(pid, data), deactivationTime)
+        },
+        insertBlog() {
+
+            const data = {
+                ...this.insertDataArr
+            };
+
+            data.section = ''
+
+            if (quill.root.innerHTML === '<p><br></p>') {
+                this.err = 'Please enter something inside Content!'
+                setTimeout(() => this.err = '', 3000)
+                return
+            }
+            data.content = quill.root.innerHTML
+
+            this.addGenre(data.genre)
+                .catch((e) => {
+                    this.err = e.code
+                })
+
+            let pid = new Date().getTime().toString()
+
+            data.date = new Date().toString()
+
+            data.location = ''
+            data.id=pid
+
+            setDoc(doc(db, 'blogs', pid), data)
+                .then(r => {
+                    this.clearform()
+                    alert(`Blog created successfully!!`)
+                })
+                .catch(e => {
+                    alert(e.code)
+                    console.log(e)
+                })
         },
 
         clearform() {
             this.newTask = '',
-                this.err = '',
-                this.tasks = [],
-                this.$refs.bg1.value = null;
-                this.$refs.bg2.value = null;
-                this.insertDataArr = {
-                    bg1:'',
-                    bg2:'',
-                    content: '',
-                    name: '',
-                    date: null,
-                    location: '',
-                    ques: '',
-                    genre: '',
-                    options: [],
-                    closed: null,
-                    audience: '',
-                    timeLeft: null,
-                }
+            this.err = '',
+            this.tasks = [],
+            this.$refs.bg.value = null;
+            this.insertDataArr = {
+                bg: '',
+                name:'',
+                content: '',
+                ques: '',
+                genre: '',
+                audience: '',
+                timeLeft: null,
+                closed: false
+            }
             quill.root.innerHTML = ''
         },
 
@@ -286,16 +328,16 @@ export default {
             if (file) {
                 try {
                     // Create a reference to the storage location
-                    const storageRef = ref(storage,'banners/' + file.name);
+                    const storageRef = ref(storage, 'banners/' + file.name);
 
                     // Upload the file
-                    await uploadBytes(storageRef,file)
+                    await uploadBytes(storageRef, file)
 
                     // Get the download URL
                     const url = await getDownloadURL(storageRef);
 
                     // Update the image URL in the component
-                    this.insertDataArr.bg1=url
+                    this.insertDataArr.bg = url
                 } catch (error) {
                     this.err = error.code
                     setTimeout(() => this.err = '', 1500)
@@ -303,28 +345,19 @@ export default {
                 }
             }
         },
-        async uploadCover(event) {
-            const file = event.target.files[0];
 
-            if (file) {
-                try {
-                    // Create a reference to the storage location
-                    const storageRef = ref(storage,'covers/' + file.name);
+        async addVotesArr(pid, options) {
+            let o = {}
+            options.forEach(element => {
+                o[element] = 0
+            });
+            setDoc(doc(db, 'votes', pid), {})
+            setDoc(doc(db, 'results', pid), o)
+        },
 
-                    // Upload the file
-                    await uploadBytes(storageRef,file)
-
-                    // Get the download URL
-                    const url = await getDownloadURL(storageRef);
-
-                    // Update the image URL in the component
-                    this.insertDataArr.bg2=url;
-                } catch (error) {
-                    this.err = error.code
-                    setTimeout(() => this.err = '', 1500)
-                    console.error('Error uploading image:', error.message);
-                }
-            }
+        deactivatePoll(pid, poll) {
+            poll.closed = true
+            setDoc(doc(db, 'polls', pid), poll)
         }
     }
 };
