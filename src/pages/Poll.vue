@@ -18,7 +18,7 @@
             </div>
 
             <div class="p-8 col-span-full">
-                <form>
+                <form @submit.prevent="$router.push('/poll/edit/'+id)">
                     <div class="col-span-full">
                         <label for="pid" class="block text-sm font-medium leading-6 text-gray-900">
                             Enter Poll Id</label>
@@ -96,7 +96,7 @@
             <div class="sm:flex sm:items-center sm:justify-between">
                 <h2 class="font-medium text-gray-700">Create Poll</h2>
             </div>
-            <InsertPoll poll="poll"></InsertPoll>
+            <InsertPoll poll="polls/"></InsertPoll>
         </div>
         
     </section>

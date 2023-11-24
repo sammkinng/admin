@@ -19,7 +19,7 @@
                    </div>
 
 
-                  <InsertPoll poll="blog"></InsertPoll>
+                  <InsertPoll poll="blogs"></InsertPoll>
 
                </div>
            </section>

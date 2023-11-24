@@ -51,18 +51,18 @@
                             </svg></router-link>
                     </a>
 
-                    <a href="#" :class="$route.path === '/poll' ? selectedClass : notSelectedClass">
+                    <a href="#" :class="$route.path.startsWith('/poll') ? selectedClass : notSelectedClass">
                         <router-link to="/poll"> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                                 fill="none" viewBox="0 0 24 24" stroke="#969CBA" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" :class="['group-hover:stroke-blue-700',$route.path === '/poll'?blueStroke:'']"
+                                <path stroke-linecap="round" stroke-linejoin="round" :class="['group-hover:stroke-blue-700',$route.path.startsWith('/poll')?blueStroke:'']"
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg></router-link>
                     </a>
 
-                    <a href="#" :class="$route.path === '/blog' ? selectedClass : notSelectedClass">
+                    <a href="#" :class="$route.path.startsWith('/blog') ? selectedClass : notSelectedClass">
                         <router-link to="/blog"> <svg class="w-5 h-5 " viewBox="0 0 24 24"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path :class="['group-hover:stroke-blue-700',$route.path === '/blog'?blueStroke:'']"
+                                <path :class="['group-hover:stroke-blue-700',$route.path.startsWith('/blog')?blueStroke:'']"
                                     d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
                                     fill="#969CBA" fill-opacity="0.2" stroke="#969CBA" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />

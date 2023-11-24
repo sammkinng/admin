@@ -31,6 +31,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="sm:col-span-4">
+                        <img :src="insertDataArr.bg" v-if="edit" />
+                    </div>
 
                     <div class="sm:col-span-4">
                         <label for="bg" class="block text-sm font-medium leading-6 text-gray-900">
@@ -38,8 +41,8 @@
                         <div class="mt-2">
                             <div
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input ref="bg" accept="image/*" @change="uploadBanner" type="file" name="bg" required
-                                    id="bg"
+                                <input ref="bg" accept="image/*" @change="uploadBanner" type="file" name="bg"
+                                    :required="!edit" id="bg"
                                     class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" />
                             </div>
                         </div>
@@ -76,7 +79,13 @@
                     <ul class="sm:col-span-3" v-if="polll">
                         <li v-for="(task, index) in tasks" :key="index"
                             class="flex justify-between items-center border-b border-gray-300 p-2 w-full">
-                            {{ task }}
+                            {{ task.name }}
+
+                            <input type="file" :ref="'op' + index" accept="image/*" @change="uploadOptionImage"
+                                :id="'op' + index">
+
+
+
                             <button class="text-red-500 cursor-pointer" @click="deleteTask(index)">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em"
                                     viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -84,6 +93,7 @@
                                         d="M576 128c0-35.3-28.7-64-64-64H205.3c-17 0-33.3 6.7-45.3 18.7L9.4 233.4c-6 6-9.4 14.1-9.4 22.6s3.4 16.6 9.4 22.6L160 429.3c12 12 28.3 18.7 45.3 18.7H512c35.3 0 64-28.7 64-64V128zM271 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" />
                                 </svg>
                             </button>
+
                         </li>
                     </ul>
                     <div class="col-span-full">
@@ -120,7 +130,7 @@
 </template>
   
 <script>
-import { setDoc, doc, Timestamp, getDoc } from 'firebase/firestore/lite';
+import { setDoc, doc, getDoc } from 'firebase/firestore/lite';
 import { db, storage } from '../main'
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -135,9 +145,15 @@ export default {
         poll: {
             type: String,
             required: true
+        },
+        edit: {
+            type: String,
+            required: true
         }
     },
     mounted() {
+        
+        this.prefetchData(this.poll, this.$route.params.id)
         quill = new Quill('#editor', {
             theme: 'snow',
         });
@@ -145,12 +161,12 @@ export default {
 
     data() {
         return {
-            polll: this.poll === 'poll',
+            polll: this.poll === 'polls',
             newTask: '',
             err: '',
             tasks: [],
             insertDataArr: {
-                name:'',
+                name: '',
                 bg: '',
                 content: '',
                 ques: '',
@@ -164,7 +180,10 @@ export default {
     methods: {
         addTask() {
             if (this.newTask.trim() !== '') {
-                this.tasks.push(this.newTask.trim());
+                this.tasks.push({
+                    name: this.newTask.trim(),
+                    img: ''
+                });
                 this.newTask = '';
             }
         },
@@ -173,15 +192,26 @@ export default {
         },
 
         insertData() {
-            if (this.polll) {
-                this.insertPoll()
+            let pid
+            let currDate
+            if (this.edit) {
+                pid = this.$route.params.id
+                currDate = new Date(this.$route.params.id)
             }
             else {
-                this.insertBlog()
+                currDate = new Date()
+                pid = currDate.getTime().toString()
+            }
+            if (this.polll) {
+
+                this.insertPoll(pid, currDate)
+            }
+            else {
+                this.insertBlog(pid, currDate)
             }
         },
 
-        insertPoll() {
+        insertPoll(pid, currDate) {
 
             const data = {
                 ...this.insertDataArr
@@ -212,21 +242,26 @@ export default {
                     this.err = e.code
                 })
 
-            let pid = new Date().getTime().toString()
+
             this.addVotesArr(pid, data.options)
 
             let timeleftDate = new Date(data.timeLeft)
-            let currDate = new Date()
+
             let deactivationTime = timeleftDate.getTime() - currDate.getTime()
             data.date = currDate.toString()
             data.timeLeft = timeleftDate.toString()
-            data.location = ''
-            data.id=pid
+            data.id = pid
 
             setDoc(doc(db, 'polls', pid), data)
                 .then(r => {
-                    this.clearform()
-                    alert(`Poll created successfully!!`)
+                    alert(`Poll ${this.edit ? 'edited' : 'created'} successfully!!`)
+                    if (this.edit) {
+                        this.$router.back()
+                      
+                    }
+                    else {
+                        this.clearform()
+                    }
                 })
                 .catch(e => {
                     alert(e.code)
@@ -235,7 +270,7 @@ export default {
 
             setTimeout(() => this.deactivatePoll(pid, data), deactivationTime)
         },
-        insertBlog() {
+        insertBlog(pid, currDate) {
 
             const data = {
                 ...this.insertDataArr
@@ -255,17 +290,22 @@ export default {
                     this.err = e.code
                 })
 
-            let pid = new Date().getTime().toString()
+
 
             data.date = new Date().toString()
 
-            data.location = ''
-            data.id=pid
+            data.date = new Date().toString()
+
+            data.date = currDate
+            data.id = pid
 
             setDoc(doc(db, 'blogs', pid), data)
                 .then(r => {
+                    alert(`Blog ${this.edit ? 'edited' : 'created'} successfully!!`)
+                    if (this.edit) {
+                        this.$router.back()
+                    }
                     this.clearform()
-                    alert(`Blog created successfully!!`)
                 })
                 .catch(e => {
                     alert(e.code)
@@ -275,12 +315,12 @@ export default {
 
         clearform() {
             this.newTask = '',
-            this.err = '',
-            this.tasks = [],
-            this.$refs.bg.value = null;
+                this.err = '',
+                this.tasks = [],
+                this.$refs.bg.value = null;
             this.insertDataArr = {
                 bg: '',
-                name:'',
+                name: '',
                 content: '',
                 ques: '',
                 genre: '',
@@ -346,10 +386,36 @@ export default {
             }
         },
 
+        async uploadOptionImage(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                try {
+                    // // Create a reference to the storage location
+                    const storageRef = ref(storage, 'options/' + file.name);
+
+                    // // Upload the file
+                    await uploadBytes(storageRef, file)
+
+                    // // Get the download URL
+                    const url = await getDownloadURL(storageRef);
+
+                    // // Update the image URL in the component
+                    this.tasks[event.target.id.split('op')[1]]['img'] = url
+                } catch (error) {
+                    this.err = error.code
+                    setTimeout(() => this.err = '', 1500)
+                    console.error('Error uploading image:', error.message);
+                }
+            }
+
+
+        },
+
         async addVotesArr(pid, options) {
             let o = {}
             options.forEach(element => {
-                o[element] = 0
+                o[element.name] = 0
             });
             setDoc(doc(db, 'votes', pid), {})
             setDoc(doc(db, 'results', pid), o)
@@ -358,6 +424,27 @@ export default {
         deactivatePoll(pid, poll) {
             poll.closed = true
             setDoc(doc(db, 'polls', pid), poll)
+        },
+
+        prefetchData(name, id) {
+            if (this.edit) {
+                getDoc(doc(db, name, id))
+                    .then(d => {
+                        if (d.exists()) {
+                            this.insertDataArr = { ...d.data() }
+                            this.tasks = [...this.insertDataArr.options]
+                            quill.root.innerHTML = this.insertDataArr.content
+
+                            let yourDate = new Date(this.insertDataArr.timeLeft)
+                            let formattedDate = yourDate.getFullYear() + '-' +
+                                String(yourDate.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(yourDate.getDate()).padStart(2, '0') + 'T' +
+                                String(yourDate.getHours()).padStart(2, '0') + ':' +
+                                String(yourDate.getMinutes()).padStart(2, '0');
+                            this.insertDataArr.timeLeft = formattedDate
+                        }
+                    })
+            }
         }
     }
 };
