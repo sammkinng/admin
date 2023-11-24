@@ -7,7 +7,7 @@
             <div class="sm:flex sm:items-center sm:justify-between">
                 <h2 class="font-medium text-gray-700">Edit</h2>
             </div>
-            <InsertPoll poll="polls" edit="true"></InsertPoll></div>
+            <InsertPoll edit="true"></InsertPoll></div>
     </section>
     <!-- <InsertPoll poll="polls" edit="true"></InsertPoll> -->
 </template>

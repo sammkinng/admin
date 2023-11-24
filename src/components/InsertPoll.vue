@@ -142,10 +142,6 @@ let quill
 
 export default {
     props: {
-        poll: {
-            type: String,
-            required: true
-        },
         edit: {
             type: String,
             required: true
@@ -153,7 +149,7 @@ export default {
     },
     mounted() {
         
-        this.prefetchData(this.poll, this.$route.params.id)
+        this.prefetchData(this.$route.path.startsWith('/poll')?'polls':'blogs', this.$route.params.id)
         quill = new Quill('#editor', {
             theme: 'snow',
         });
@@ -161,7 +157,8 @@ export default {
 
     data() {
         return {
-            polll: this.poll === 'polls',
+            polll: this.$route.path.startsWith('/poll'),
+            id:this.$route.params.id,
             newTask: '',
             err: '',
             tasks: [],
@@ -195,8 +192,8 @@ export default {
             let pid
             let currDate
             if (this.edit) {
-                pid = this.$route.params.id
-                currDate = new Date(this.$route.params.id)
+                pid = this.id
+                currDate = new Date(parseInt(this.id))
             }
             else {
                 currDate = new Date()
@@ -252,7 +249,7 @@ export default {
             data.timeLeft = timeleftDate.toString()
             data.id = pid
 
-            setDoc(doc(db, 'polls', pid), data)
+            setDoc(doc(db, 'polls',pid), data)
                 .then(r => {
                     alert(`Poll ${this.edit ? 'edited' : 'created'} successfully!!`)
                     if (this.edit) {
@@ -290,16 +287,10 @@ export default {
                     this.err = e.code
                 })
 
-
-
-            data.date = new Date().toString()
-
-            data.date = new Date().toString()
-
             data.date = currDate
             data.id = pid
 
-            setDoc(doc(db, 'blogs', pid), data)
+            setDoc(doc(db, 'blogs',pid), data)
                 .then(r => {
                     alert(`Blog ${this.edit ? 'edited' : 'created'} successfully!!`)
                     if (this.edit) {
@@ -432,9 +423,8 @@ export default {
                     .then(d => {
                         if (d.exists()) {
                             this.insertDataArr = { ...d.data() }
+                            if(name==='polls'){
                             this.tasks = [...this.insertDataArr.options]
-                            quill.root.innerHTML = this.insertDataArr.content
-
                             let yourDate = new Date(this.insertDataArr.timeLeft)
                             let formattedDate = yourDate.getFullYear() + '-' +
                                 String(yourDate.getMonth() + 1).padStart(2, '0') + '-' +
@@ -442,6 +432,12 @@ export default {
                                 String(yourDate.getHours()).padStart(2, '0') + ':' +
                                 String(yourDate.getMinutes()).padStart(2, '0');
                             this.insertDataArr.timeLeft = formattedDate
+                            }
+                            quill.root.innerHTML = this.insertDataArr.content
+                        }
+                        else{
+                            alert(name+" with this id does not exist")
+                            this.$router.back()
                         }
                     })
             }

@@ -1,15 +1,7 @@
 <!-- MyComponent.vue -->
 
 <template>
-    <section class="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
-        <div>
-            <h2 class="text-3xl font-medium text-gray-800">Admin Panel</h2>
-            <p class="mt-2 text-sm text-gray-500"></p>
-        </div>
-
-
-    </section>
-
+   
     <section class="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 ">
 
         <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
@@ -96,7 +88,7 @@
             <div class="sm:flex sm:items-center sm:justify-between">
                 <h2 class="font-medium text-gray-700">Create Poll</h2>
             </div>
-            <InsertPoll poll="polls/"></InsertPoll>
+            <InsertPoll ></InsertPoll>
         </div>
         
     </section>
