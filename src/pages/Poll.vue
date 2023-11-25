@@ -36,14 +36,14 @@
             </div>
 
             <div class="p-8 col-span-full">
-                <form>
+                <form @submit.prevent="deletePoll(id1)">
                     <div class="col-span-full">
-                        <label for="pid" class="block text-sm font-medium leading-6 text-gray-900">
+                        <label for="pid1" class="block text-sm font-medium leading-6 text-gray-900">
                             Enter Poll Id</label>
                         <div class="mt-2">
                             <div
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input v-model="id" type="text" name="pid" required id="pid"
+                                <input v-model="id1" type="text" name="pid1" required id="pid1"
                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-1"
                                     placeholder="1234" />
                             </div>
@@ -96,7 +96,9 @@
   
 <script>
 
+import { deleteDoc, doc } from 'firebase/firestore/lite';
 import InsertPoll from '../components/InsertPoll.vue';
+import { db } from '../main';
 
 export default {
     components: {
@@ -104,7 +106,8 @@ export default {
     },
     data() {
         return {
-            id: ''
+            id: '',
+            id1:''
         }
     },
 
@@ -115,10 +118,21 @@ export default {
     mounted() {
 
     },
-
-
-
     methods: {
+        deletePoll(id){
+            let res=window.confirm("Do you really want to delete the poll with id:"+id)
+            if(res){
+            deleteDoc(doc(db,'polls',id))
+            .then((r)=>{
+                alert('Poll deleted successfully!')
+                this.id1=''
+            })
+            .catch((e)=>console.log(e))
+            }
+            else{
+
+            }
+        }
 
     },
 
