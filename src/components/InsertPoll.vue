@@ -287,7 +287,7 @@ export default {
                     this.err = e.code
                 })
 
-            data.date = currDate
+            data.date = currDate.toString()
             data.id = pid
 
             setDoc(doc(db, 'blogs',pid), data)

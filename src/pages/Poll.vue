@@ -75,6 +75,16 @@
                                 placeholder="Hello Notification!" />
                         </div>
 
+                        <label for="link" class="block text-sm font-medium leading-6 text-gray-900">
+                            Enter Link </label>
+
+                        <div
+                            class="mt-2 mb-5 flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                            <input v-model="link" type="text" name="link" required id="link"
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-1"
+                                placeholder="/blog/home" />
+                        </div>
+
                         <label for="ic" class="block text-sm font-medium leading-6 text-gray-900">
                             Insert Image </label>
 
@@ -156,7 +166,8 @@ export default {
             ntf: '',
             icon: '',
             notifs:[],
-            del:''
+            del:'',
+            link:''
         }
     },
 
@@ -189,7 +200,8 @@ export default {
             setDoc(doc(db,'notifications',id),{
                 text:this.ntf,
                 img:this.icon,
-                id
+                id,
+                link
             })
             .then(()=>{
                 alert('Notification added successfully!')
