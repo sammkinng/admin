@@ -296,7 +296,9 @@ export default {
                     if (this.edit) {
                         this.$router.back()
                     }
+                    else{
                     this.clearform()
+                    }
                 })
                 .catch(e => {
                     alert(e.code)

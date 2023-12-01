@@ -4,11 +4,25 @@
   <section class="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
     <div>
       <h2 class="text-3xl font-medium text-gray-800">Dashboard</h2>
-      <p class="mt-2 text-sm text-gray-500">Mobile UX/UI Design Course</p>
+      <!-- <p class="mt-2 text-sm text-gray-500">Mobile UX/UI Design Course</p> -->
     </div>
 
     <div class="flex flex-col mt-6 md:flex-row md:-mx-1 md:mt-0">
-      <button
+      <div class="relative">
+
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </span>
+
+                    <input type="date" @change="dateFilter" v-model="date"
+                        class="py-2.5 pl-10 pr-4 text-gray-700 placeholder-gray-400 bg-white border border-transparent border-gray-200 rounded-lg sm:w-auto w-36 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        ></div>
+      <!-- <button
         class="px-6 py-3 focus:outline-none text-gray-500 transition-colors duration-300 rounded-lg md:mx-1 hover:bg-gray-400 hover:text-white">
         <div class="flex items-center justify-center -mx-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" fill="none" viewBox="0 0 24 24"
@@ -31,7 +45,7 @@
 
           <span class="mx-1 text-sm capitalize">Create new course</span>
         </div>
-      </button>
+      </button> -->
     </div>
   </section>
 
@@ -46,8 +60,16 @@
         </svg>
 
         <div class="mx-2">
-          <h3 class="text-2xl font-medium text-gray-800">62</h3>
-          <p class="mt-1 text-sm text-gray-500">Students</p>
+          <h3 class="text-2xl font-medium text-gray-800">{{ totalPolls }}</h3>
+          <p class="mt-1 text-sm text-gray-500">Polls</p>
+        </div>
+        <div class="mx-3">
+          <h3 class="text-2xl font-medium text-gray-800">{{ activePolls }}</h3>
+          <p class="mt-1 text-sm text-gray-500">Active</p>
+        </div>
+        <div class="mx-3">
+          <h3 class="text-2xl font-medium text-gray-800">{{ inActivePolls }}</h3>
+          <p class="mt-1 text-sm text-gray-500">Inactive</p>
         </div>
       </div>
     </div>
@@ -68,8 +90,8 @@
         </svg>
 
         <div class="mx-2">
-          <h3 class="text-2xl font-medium text-gray-800">6.8</h3>
-          <p class="mt-1 text-sm text-gray-500">Average mark</p>
+          <h3 class="text-2xl font-medium text-gray-800">{{ totalBlogs }}</h3>
+          <p class="mt-1 text-sm text-gray-500">Blogs</p>
         </div>
       </div>
     </div>
@@ -84,37 +106,21 @@
         </svg>
 
         <div class="mx-2">
-          <h3 class="text-2xl font-medium text-gray-800">9 <span class="text-xl text-gray-600">(14%)</span></h3>
-          <p class="mt-1 text-sm text-gray-500">Underperforming students</p>
+          <h3 class="text-2xl font-medium text-gray-800">{{ totalUsers }}</h3>
+          <p class="mt-1 text-sm text-gray-500">Users</p>
         </div>
       </div>
     </div>
 
-    <div class="flex items-center px-6 py-8 bg-white rounded-lg shadow-md shadow-gray-200 ">
-      <div class="flex items-center -mx-2">
-        <svg class="mx-2" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="35" cy="35" r="35" fill="#4CB8FF" fill-opacity="0.07" />
-          <path
-            d="M42 26V44H31C30.2044 44 29.4413 43.6839 28.8787 43.1213C28.3161 42.5587 28 41.7956 28 41V29C28 28.2044 28.3161 27.4413 28.8787 26.8787C29.4413 26.3161 30.2044 26 31 26H42Z"
-            stroke="#4CB8FF" stroke-width="2" stroke-linecap="square" />
-          <path d="M28 41C28 40.2044 28.3161 39.4413 28.8787 38.8787C29.4413 38.3161 30.2044 38 31 38H42" stroke="#4CB8FF"
-            stroke-width="2" stroke-linecap="square" />
-        </svg>
 
-        <div class="mx-2">
-          <h3 class="text-2xl font-medium text-gray-800">92%</h3>
-          <p class="mt-1 text-sm text-gray-500">Finished homeworks</p>
-        </div>
-      </div>
-    </div>
 
     <div
       class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-2 md:row-span-2 gap-y-4 gap-x-8 ">
       <div class="sm:flex sm:items-center sm:justify-between">
-        <h2 class="font-medium text-gray-700">The number of applied and left students per month</h2>
+        <h2 class="font-medium text-gray-700">User count per month</h2>
 
         <div class="flex items-center mt-4 -mx-2 sm:mt-0">
-          <span class="flex items-center text-gray-600">
+          <!-- <span class="flex items-center text-gray-600">
             <p class="mx-2">Applied</p>
 
             <span class="w-2 h-2 mx-2 bg-orange-500 rounded-full"></span>
@@ -123,14 +129,14 @@
           <span class="flex items-center text-gray-600">
             <p class="mx-2">Left</p>
             <span class="w-2 h-2 mx-2 bg-indigo-500 rounded-full"></span>
-          </span>
+          </span> -->
         </div>
       </div>
 
       <canvas class="max-w-3xl max-h-96" id="secondChart"></canvas>
     </div>
 
-    <div class="row-span-3 bg-white rounded-lg shadow-md shadow-gray-200">
+    <!-- <div class="row-span-3 bg-white rounded-lg shadow-md shadow-gray-200">
       <div class="px-6 py-5 border-b border-gray-100 sm:flex sm:items-center sm:justify-between">
         <h2 class="font-medium text-gray-700">Students by average mark</h2>
 
@@ -219,9 +225,9 @@
           <span class="font-semibold text-gray-600">9.9</span>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
+    <!-- <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
       <div class="px-6 py-5 border-b border-gray-100">
         <h2 class="font-medium text-gray-700">Students by type of studying</h2>
       </div>
@@ -229,9 +235,9 @@
       <div class="flex items-center p-8">
         <canvas class="max-w-sm" id="myChart"> </canvas>
       </div>
-    </div>
+    </div> -->
 
-    <div class="flex items-center px-6 py-8 bg-white rounded-lg shadow-md shadow-gray-200 ">
+    <!-- <div class="flex items-center px-6 py-8 bg-white rounded-lg shadow-md shadow-gray-200 ">
       <div class="flex items-center -mx-2">
         <svg class="mx-2" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="35" cy="35" r="35" fill="#FFB800" fill-opacity="0.07" />
@@ -248,9 +254,9 @@
           <p class="mt-1 text-sm text-gray-500">Lections left</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="flex items-center px-6 py-8 bg-white rounded-lg shadow-md shadow-gray-200 ">
+    <!-- <div class="flex items-center px-6 py-8 bg-white rounded-lg shadow-md shadow-gray-200 ">
       <div class="flex items-center -mx-2">
         <svg class="mx-2" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="35" cy="35" r="35" fill="#4CB8FF" fill-opacity="0.07" />
@@ -265,142 +271,174 @@
           <p class="mt-1 text-sm text-gray-500">Hours spent on lections</p>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
   
 <script>
 import Chart from 'chart.js/auto';
+import { getDoc, doc, getDocs, collection } from 'firebase/firestore/lite';
+import { db } from '../main';
 export default {
   data() {
     return {
-      message: 'Hello from MyComponent!',
+      totalUsers: 2,
+      activePolls: 2,
+      inActivePolls: 4,
+      totalPolls: 6,
+      totalBlogs: 3,
+      polls:[],
+      blogs:[],
+      date:new Date()
     };
   },
   mounted() {
-    const charData = {
-      type: 'doughnut',
 
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
-        datasets: [{
-          label: '# of Votes',
-          data: [20, 20, 20, 10, 10],
+    getDocs(collection(db,'polls'))
+    .then(qs=>{
+      let arr=[]
+      let inactive=0
+      qs.forEach(d=>{
+        arr.push(d.data())
+        if(d.data().closed){
+          inactive+=1
+        }
+      })
+      this.totalPolls=arr.length
+      this.inActivePolls=inactive
+      this.activePolls=this.totalPolls-inactive
+      this.polls=arr
+    })
 
-          backgroundColor: [
-            'rgba(153, 102, 255)',
-            'rgba(255, 206, 86)',
-            'rgba(255, 99, 132)',
-            'rgba(54, 162, 235)',
-            'rgba(75, 192, 192)',
-          ],
-          borderColor: [
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(75, 192, 192, 1)',
-          ],
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            position: 'bottom',
-            fullSize: false,
-            align: 'start',
-            labels: {
-              padding: 10,
-              usePointStyle: true,
-              pointSytle: 'circle'
-            }
-          }
-        },
-      }
-    };
+    getDocs(collection(db,'blogs'))
+    .then(qs=>{
+      let arr=[]
+      let inactive=0
+      qs.forEach(d=>{
+        arr.push(d.data())
+        if(d.data().closed){
+          inactive+=1
+        }
+      })
+      this.totalBlogs=arr.length
+      this.blogs=arr
+    })
+
+    let year = new Date().getFullYear()
+    let month = new Date().getMonth()
 
     const data = [
-      { x: 'Jan', applied: 19, left: 16 },
-      { x: 'Feb', applied: 15, left: 8 },
-      { x: 'Mar', applied: 24, left: 14 },
-      { x: 'Apr', applied: 8, left: 7 },
-      { x: 'May', applied: 11, left: 7 },
-      { x: 'Jun', applied: 10, left: 6 },
-      { x: 'Jul', applied: 17, left: 15 },
-      { x: 'Aug', applied: 19, left: 18 },
-      { x: 'Sep', applied: 18, left: 12 },
-      { x: 'Oct', applied: 19, left: 20 },
-      { x: 'Nov', applied: 18, left: 8 },
-      { x: 'Dec', applied: 17, left: 12 },
+      { x: 'Jan', users: 19, },
+      { x: 'Feb', users: 15, },
+      { x: 'Mar', users: 24, },
+      { x: 'Apr', users: 8, },
+      { x: 'May', users: 11, },
+      { x: 'Jun', users: 10, },
+      { x: 'Jul', users: 17, },
+      { x: 'Aug', users: 19, },
+      { x: 'Sep', users: 18, },
+      { x: 'Oct', users: 19, },
+      { x: 'Nov', users: 18, },
+      { x: 'Dec', users: 17, },
     ];
 
-    const secondcharData = {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          label: 'Applied students',
-          borderRadius: 5,
-          data: data,
-          backgroundColor: '#FF7A00',
-          maxBarThickness: 5,
-          parsing: {
-            yAxisKey: 'applied'
-          },
-        },
-        {
-          label: 'Left students',
-          borderRadius: 5,
-          maxBarThickness: 5,
-          data: data,
-          backgroundColor: '#6F52ED',
-
-          parsing: {
-            yAxisKey: 'left'
-          },
-        },
-
-        ]
-      },
-      options: {
-        responsive: true,
-
-
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }],
-          y: {
-            beginAtZero: true,
-            max: 25
-          },
-          x: {
-            grid: {
-              display: false
-            }
-          },
-        },
-
-        plugins: {
-          legend: {
-            display: false
+    getDoc(doc(db, 'monthlyUsers', year + ''))
+      .then(d => {
+        if (d.exists()) {
+          let arr = d.data()['arr']
+          this.totalUsers = arr[month]
+          for (let i = 0; i < 12; i++) {
+            data[i]['users'] = arr[i]
           }
+          const secondcharData = {
+            type: 'bar',
+            data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Users',
+                borderRadius: 5,
+                data: data,
+                backgroundColor: '#FF7A00',
+                maxBarThickness: 8,
+                parsing: {
+                  yAxisKey: 'users'
+                },
+              }
+              ]
+            },
+            options: {
+              responsive: true,
+
+
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }],
+                y: {
+                  beginAtZero: true,
+                 
+                },
+                x: {
+                  grid: {
+                    display: false
+                  }
+                },
+              },
+
+              plugins: {
+                legend: {
+                  display: false
+                }
+              }
+            }
+          };
+
+
+          const second = document.getElementById('secondChart');
+
+          new Chart(second, secondcharData);
         }
-      }
-    };
+      })
 
-    const ctx = document.getElementById('myChart');
-    const second = document.getElementById('secondChart');
-    const myChart = new Chart(ctx, charData);
-    const secondChart = new Chart(second, secondcharData);
-
-    myChart;
-    secondChart;
+  },
+  methods:{
+    dateFilter(){
+      let inactive=0
+      let a=this.polls.filter(p=>{
+        let pd=new Date(p.date)
+        let sd=new Date(this.date)
+        
+        if(pd.getDate()===sd.getDate() && pd.getMonth()===sd.getMonth() && pd.getFullYear() === sd.getFullYear()){
+          if(p.closed){
+            inactive+=1
+          }
+          return true
+        }
+        return false
+      })
+      
+      let b=this.blogs.filter(x=>{
+        let pd=new Date(x.date)
+        let sd=new Date(this.date)
+        
+        if(pd.getDate()===sd.getDate() && pd.getMonth()===sd.getMonth() && pd.getFullYear() === sd.getFullYear()){
+          return true
+        }
+        return false
+      })
+      
+      this.totalBlogs=b.length
+      this.totalPolls=a.length
+      this.inActivePolls=inactive
+      this.activePolls=this.totalPolls-inactive
+    }
   }
 };
 </script>
   
-<style scoped>/* Your component-specific styles go here */</style>
+<style scoped>
+/* Your component-specific styles go here */
+</style>
   
