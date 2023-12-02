@@ -201,7 +201,7 @@ export default {
                 text:this.ntf,
                 img:this.icon,
                 id,
-                link
+                link:this.link
             })
             .then(()=>{
                 alert('Notification added successfully!')
