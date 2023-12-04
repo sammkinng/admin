@@ -56,8 +56,45 @@
                 </form>
             </div>
         </div>
-
         <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
+            <div class="px-6 py-5 border-b border-gray-100">
+                <h2 class="font-medium text-gray-700">Delete Notification</h2>
+            </div>
+
+            <div class="p-8 col-span-full">
+                <form @submit.prevent="delteteNotifs()">
+                    <div class="col-span-full">
+                        <label for="ntf" class="block text-sm font-medium leading-6 text-gray-900">
+                            Select Notification </label>
+
+                        <div class="mt-2 ">
+                            <select id="del" name="del" v-model="del" required
+                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                                                <option value="">Select Notif</option>
+                                                <option v-for="(item, idx) in notifs" :key="idx" :value="item.id">
+                                                    {{ item.text }}</option>
+                                            </select>
+                        </div>
+
+                    </div>
+                    <div class="mt-6 flex items-center justify-end gap-x-6">
+                        <button type="submit"
+                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div
+            class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-2 md:row-span-2 gap-y-4 gap-x-8 ">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <h2 class="font-medium text-gray-700">Create Poll</h2>
+            </div>
+            <InsertPoll></InsertPoll>
+        </div>
+        <div class="lg:rows-span-2 grid gap-8">
+
+        <div class=" bg-white rounded-lg shadow-md shadow-gray-200 ">
             <div class="px-6 py-5 border-b border-gray-100">
                 <h2 class="font-medium text-gray-700">Add Notification</h2>
             </div>
@@ -106,45 +143,34 @@
             </div>
         </div>
 
-        <div class=" bg-white rounded-lg shadow-md shadow-gray-200 lg:row-span-2">
+        
+        
+        <div class=" bg-white rounded-lg shadow-md shadow-gray-200 ">
             <div class="px-6 py-5 border-b border-gray-100">
-                <h2 class="font-medium text-gray-700">Delete Notification</h2>
+                <h2 class="font-medium text-gray-700">Google Ads</h2>
             </div>
 
             <div class="p-8 col-span-full">
-                <form @submit.prevent="delteteNotifs()">
+                <form @submit.prevent="submitAd()">
                     <div class="col-span-full">
-                        <label for="ntf" class="block text-sm font-medium leading-6 text-gray-900">
-                            Select Notification </label>
+                        <label for="ad" class="block text-sm font-medium leading-6 text-gray-900">
+                            Paste Ad Code </label>
 
-                        <div class="mt-2 ">
-                            <select id="del" name="del" v-model="del" required
-                                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                                <option value="">Select Notif</option>
-                                                <option v-for="(item, idx) in notifs" :key="idx" :value="item.id">
-                                                    {{ item.text }}</option>
-                                            </select>
+                            <div
+                            class="mt-2 mb-5 flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                            <textarea v-model="ad" type="text" name="ad" required id="ad"
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-1"
+                                placeholder="<div></div>" rows="5" />
                         </div>
 
                     </div>
                     <div class="mt-6 flex items-center justify-end gap-x-6">
                         <button type="submit"
-                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
+                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
                     </div>
                 </form>
             </div>
-        </div>
-
-
-        
-
-        <div
-            class="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-2 md:row-span-2 gap-y-4 gap-x-8 ">
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <h2 class="font-medium text-gray-700">Create Poll</h2>
-            </div>
-            <InsertPoll></InsertPoll>
-        </div>
+        </div></div>
     </section>
 </template>
   
@@ -167,7 +193,8 @@ export default {
             icon: '',
             notifs:[],
             del:'',
-            link:''
+            link:'',
+            ad:''
         }
     },
 
@@ -256,6 +283,18 @@ export default {
                 this.notifs=x
             })
             .catch(e=>console.log(e))
+        },
+        submitAd(){
+            setDoc(doc(db,'ads','ad1'),{
+                code:this.ad
+            })
+            .then(()=>{
+                alert('Ad posted!')
+                this.ad=''
+            })
+            .catch(e=>{
+                console.log(e)
+            })
         }
 
     },
@@ -265,5 +304,8 @@ export default {
   
 <style scoped>
 /* Your component-specific styles go here */
+#ad{
+    resize: none;
+}
 </style>
   
